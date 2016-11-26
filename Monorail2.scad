@@ -1,79 +1,114 @@
-// Monorail 28 feb. 2016
+// Monorail 26 nov. 2016
 include <Z_library.scad>
-// Copyright P.Rouzeau 2015-206  - license : OHL V1.2
+// Copyright P.Rouzeau 2015-2016  - license : OHL V1.2
 // This license does apply for any derived work whatever scale is used, including full scale ! This apply especially to the on-vehicle switch system.
+// Vertical reference is rail axis
+/* [Global] */
+//Part
+part=0; // [0:Whole model, 1:Freewhel h1, 2:Freewhel h2, 3:Motor wheel h1, 4: Motor wheel h2, 5:Free bogie h1, 6:Free bogie h2, 7:Free bogie arm h1, 8:Free bogie arm h2, 10:Motor bogie h1, 11:Motor bogie h2, 12:Motor bogie arm h1, 13:Motor bogie arm h2,  14:Centering ring, 21:Car spreader, 22:Top hinge cup, 23:Top hinge shaft, 24:Bottom hinge cup, 25:Bottom hinge cup support, 26:Bottom hinge shaft, 27:Bottom hinge shaft slider, 28:Hinges drilling template, 31:Name plate, 37:Current collection frame, 38:Current collection pads, 39:Current track position template, 41:Rail support for rectangular beam, 43:Rail support for circular beam, 44:Current track support for circular beam, 46:Way side support for rectangular beam, 47:Way side support for circular beam, 48:Way side support 2, 49:Way side support 3, 51:Rect beam support - side attach, 52:Rect beam support - top attach, 53:circular beam support - side attach, 54:Circ beam support - top attach, 55:Circ beam support - top attach - top beam part, 56:Way end stop, 57:Switch hinge h1, 58:Switch hinge h2, 59:Adjustable height switch roller bearing, 61:Set - 2 free bogie wheels, 62:Set - 2 motor bogie wheels, 64:Set - Simple bogie - bearing boxes,   66:Set - Motor bogie - side arms]
 
-part=0; // part to display - if zero, whole monorail
-//see line 127 for parts references
-
+//Parts quantity
 partqty=0; // if different of 0, change default part qty
-/* 1,2: simple wheel, 2,3: motor wheel, 5,6:simple bogie bearing boxes
-7,8: motor bogie casing, 9,10:
-*/
+/* [General] */
+//Banking angle
+angbank=0; // [-16:16]
+//car banking angle +/- 16° maximum - play with it !
 
-angbank =0; // car banking angle +/- 16° maximum - play with it !
-
-// car parameters
+/*[Car]*/
+//Car width
 car_wd = 112; // LGB : 112
+//Car height
 car_ht = 92;
+//Roof arch height
 roof_ht = 19; // roof height included roof thickness
-car_len = 445; // LGB simple car: 192 : long cars : 445 ?
+//End cars length
+car_len = 445; 
+//LGB simple car: 192 : long cars : 445 ?
+//End car windows qty
 car_windows = 7;
+//Central car length
 car_len2 = 200; 
+//Central car windows qty
 car_windows2 = 3;
-door_offset = -10; // car door side offset
-// car position data
+//Car door side offset
+door_offset = -10; 
+//Car position data
 bgdec = 100; // start point
-bgoffset = 50; // offset of the bogie on x axis to end car
-carspace = 40; // space between two cars dictate minimum radius: for 34, ~750 (diam 1500), for 40, ~600 -> length 1m for 90° bend 
+//Bogie axis offset/car end
+bgoffset = 50;
+//Space between two cars 
+carspace = 40; // dictate minimum radius: for 34, ~750 (diam 1500), for 40, ~600 -> length 1m for 90° bend 
 // this take into account roof extra-length of 3mm, so real space for 34 is 28.
 
-// bogie parameters
+/*[Bogie]*/
+//Wheel diameter (on rail axis)
 wheeldia = 40; // diameter to rail centre
+//Motor wheel groove size
 wheelgroove = 2;
+//Free bogie Wheel distance
 wheel_space = 76;
-barht = 14; // bogie beam height (enclosing wheeel bearings)
-BB_vpos = -69; // articulation bearing position - define way clearance
+//Bogie beam height (bearing box)
+barht = 14; // (enclosing wheeel bearings)
+//Articulation bearing position / rail axis
+BB_vpos = -69; 
+//define way clearance
 
-// car position
-car_vpos = BB_vpos-98; // vertical position (floor) relative to the rail axis 
-car_hpos  = 2; // car side offset
-distpylon = 70; // distance between bogie axis and support face (not main pylon face)
+//Car side offset (from rail axis)
+car_hpos  = 2;
+//distance between bogie axis and support face
+distpylon = 70; 
+// (not main pylon face)
 
-// way parameters
-railbeamdist = 4+5; // distance between rail axis and top of the rectangular beam 
-//way_hoffset = 6; // side offset of the rail on the way
-beam_width = 27; // way beam width maxi ~20- if modified, modify offset to maintain power pad place for 27, way_offset = 2.5
+/*[Way]*/
+//Circular way beam
+pipe_way = false; 
+//way is circular: false-> rectangular beam -> set beam_width for proper current pad collection -> way_offset =6
+//Distance beam top to rail axis
+railbeamdist = 9; //distance between rail axis and top of the rectangular beam 
+//Rectangular way beam width maxi
+beam_width = 27; //maxi ~20- if modified, modify offset to maintain power pad place for 27, way_offset = 2.5
 // for power rail installation, the beam shall not protrude more than 11 mm on the rail side: adjust horizontal offset accordingly. modifiy 'angbank' value to see results.
-hbeam    = 27; // way beam height - max ~27 
-pipe_way = false; //way is circular: false-> rectangular beam -> set beam_width for proper current pad collection -> way_offset =6
-diam_way = 32; // way pipe diam 32 or 25
+//Rectangular way beam height
+hbeam  = 27; // max ~27 
+//Way beam diameter if circular
+diam_way = 32; // [25:32] pipe diam 32 or 25
 
-way_hoffset=(pipe_way)?diam_way/2-9:beam_width/2-10; 
-
-wtopbeam = 27; // beam width above the way
+//Way support board width
+wtopbeam = 27; 
 
 //ppw_vpos = (diam_way==32)?-22:(diam_way==25)?-19:0;
 ppw_vpos = -diam_way/2-6.5;
 //ppw_vpos = -22; //pipe_way tube avis pos -22 for pipe_way 32, -19 for pipe_way diam 25 ??? more linear stuff ?
 
+//Beams support board distance (from way beam top) 
+beamsupspace  = 54;
+  // side support beam face to beam face : distance 54 mm
+//Bolted beams support board distance (from way beam top) 
+beamsupspace2 = 69; 
+  // beam support bolted below : face to face distance ~ 69mm 
+
+/*[Power]*/
+//Brush axis position below rail 
 brushAxis = -22;//~ -22:vertical pos of brush pad axis. shall be relatively low (to align as far as possible the brush pad axis, the rail and the power beam articulation axis: this minimize vertical excursion): 0: no rail
 brushAxisHt = -18;// horizontal pos of brush pads
 
-// beams supports 
-beamsupspace  = 54;// side support beam face to beam face : distance 54 mm
-beamsupspace2 = 69; // beam support bolted below : face to face distance ~ 69mm 
+/*[Colors]*/
+//Cabin color
+//Car color 
+car_color = "red"; // ["red", "lightblue", "blue", "green", "yellow", "orange"]
+//Roof color
+roof_color = "grey"; // ["grey", "black", "brown"]
+//Window frame color
+winframe_color = "beige"; // ["beige", "grey", "black"]
+//Car structure color
+car_struct_color = "darkgrey"; // ["darkgrey", "black"]
 
+/*[Hidden]*/
+clr_glass = [0.5,0.5,0.5,0.8]; // glass color
 //$ssw = true; // future on-vehicle switching - add gussets
 // Postponed to undefined date
+cabin_color = car_color; 
 sswaxis = wheeldia/2+barht/2+4.5; // = 31.5
-
-// colors
-winframe_color = "beige";
-cabin_color = "red";
-car_color = "red";
-clr_glass = [0.5,0.5,0.5,0.8];
-
 // misc. parameters
 diamNut3 = 6; // check ??
 diamNut4 = 8.1; // check ??
@@ -118,6 +153,11 @@ geardia = gearteeth*0.5+1;
 motor_len = 51; // motor length
 
 dispswitch=true; // display the switch system
+
+//Car position
+car_vpos = BB_vpos-98; // vertical position (floor) relative to the rail axis 
+
+way_hoffset=(pipe_way)?diam_way/2-9:beam_width/2-10; 
 
 disp(); // display part or complete system, depending part selector
 if ($ssw)
@@ -1422,7 +1462,7 @@ module car_spreader (roofvpos=20){ //car sides spreader beam maintaining the bog
 
 module roof (lgroof=100) { // roof
   diarf = 240;
-  color("grey")  tsl (0,0,car_ht) 
+  color(roof_color)  tsl (0,0,car_ht) 
     difference() {
       intersection() {
         cubez (lgroof+6,car_wd+2,roof_ht+1, lgroof/2+0.05);
@@ -1437,6 +1477,7 @@ module roof (lgroof=100) { // roof
 }
 
 module car(car_len=192, car_windows=4, clr="blue") {
+  echo("car color", clr);
   diarf=240;
   module box() {  
     color(clr)  {tsl (0,0,car_ht/2)
@@ -1462,7 +1503,7 @@ module car(car_len=192, car_windows=4, clr="blue") {
        cubex (5,24,40,car_len/2-0.1,door_offset,57);
   }
   roof (car_len); 
-  color ("darkgrey") {    
+  color (car_struct_color) {    
     cubez (car_len,car_wd,-0.2,car_len/2);
     dmirrory () 
       cubez (car_len,11.5,-11.5,  car_len/2,32.5); 
@@ -1502,7 +1543,7 @@ module platform(mirr=false, plen=45, clr=cabin_color) {
   win_h = car_ht-htwin;
   win_cent = win_h+htwin/2;
   side_dec= 10;
-  color ("darkgrey") { 
+  color (car_struct_color) { 
     difference() {
       union() {    
        cubez (plen,car_wd,1.7, plen/2,0,-0.2);
