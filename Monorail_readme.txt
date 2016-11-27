@@ -17,14 +17,18 @@ have charged batteries available.
 
 To see the simulation of the monorail, run the Monorail2.scad in OpenScad
 The parameters of this simulation are defined within the file.
-From Nov.2016 snapshots, OpenSCAD does have own customizer, but it is yet a bit buggy.
+From 11 Nov.2016 snapshot, OpenSCAD does have own customizer, but it is yet a bit buggy and
+need some GUI improvements.
+See http://files.openscad.org/snapshots/
 To creates a part STL file, define a part Number in Monorail2.scad or select in customizer 
 and run. part=0 will show the complete model. 
 You also can run the batch files (Windows only) to get all the STL files. 
 Note that calculating the stl file will take some time, you may update your file manager
 to check completion.
-Wait the final execution of a batch file before starting the next one.
+Wait the final execution of a batch file before starting the next one (look the dates of the
+stl files).
 Note that the sub directories /STL and /STL_Way shall exist to have the batch file working.
+Remember OpenSCAD file management is case sensitive. 
 
 Like the Schwebebahn monorail, cars are slighly off-centered to compensate the motor weight (2mm).
 
