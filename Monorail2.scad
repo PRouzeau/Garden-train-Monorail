@@ -105,6 +105,7 @@ car_struct_color = "darkgrey"; // ["darkgrey", "black"]
 
 /*[Hidden]*/
 clr_glass = [0.5,0.5,0.5,0.8]; // glass color
+$ssw=false;
 //$ssw = true; // future on-vehicle switching - add gussets
 // Postponed to undefined date
 cabin_color = car_color; 
@@ -160,7 +161,7 @@ car_vpos = BB_vpos-98; // vertical position (floor) relative to the rail axis
 way_hoffset=(pipe_way)?diam_way/2-9:beam_width/2-10; 
 
 disp(); // display part or complete system, depending part selector
-if ($ssw)
+if(!is_undef($ssw)&&$ssw)
   self_switch(0); //display on-vehicle switching-system too complex
 
 module disp() {
@@ -619,7 +620,7 @@ module motor_bogie(supp=false) { // half motor block
             cylx  (14,4,   12.25, 6.5,-51, 32);
             cubey (4,2,1,  12.25+2, 0,-55);
           } 
-        else if ($ssw)
+        else if(!is_undef($ssw)&&$ssw)
            tsl (0,23.5)
              hull() { // self-switch gusset
                cylx (9,-3,    lg2/2,0,barht/2+4.5);
@@ -819,7 +820,7 @@ module sbogie_h() { // non motor bogie beam
       cyly (-4+plb,66,   8,      6);
     }  
   }
-  if ($pad) 
+  if($pad) 
     dmirrorx()
      cylz (12,0.7, lg/2,10,6.3);
 }
@@ -835,7 +836,7 @@ module sbogie_h1() {  //  non motor bogie beam with brush support
           cubex(3.7,12.8,2, 12,6.5,14-wheeldia/2);
         }
         // cyly (44,8, wheel_space/2,0,0, 50); //check passage
-        if ($ssw)
+        if(!is_undef($ssw)&&$ssw)
           hull() { // self-switch attach
             cylx (9,-3,    lg2/2,0,barht/2+4.5);
             cylx (9,-3,    lg2/2,3,barht/2+4.5);
@@ -1043,7 +1044,7 @@ module brushpadold() {
 }
 
 
-module barsep (horiz=false, wd=12.8, circ_way=false) { // separating attach. for way suspension from top or switch
+module barsep (horiz=false, wd=12.8, circ_way=pipe_way) { // separating attach. for way suspension from top or switch
   //beam_width = 27;
   way_hoffset=(circ_way)?diam_way/2-9:beam_width/2-10; 
   dtw = beam_width/2-8.5+way_hoffset;
@@ -1477,65 +1478,65 @@ module roof (lgroof=100) { // roof
 }
 
 module car(car_len=192, car_windows=4, clr="blue") {
-  echo("car color", clr);
+  //echo("car color", clr);
   diarf=240;
   module box() {  
     color(clr)  {tsl (0,0,car_ht/2)
      difference() {
-       cubex (car_len,car_wd,car_ht);
-       cubex (car_len-3,car_wd-3,car_ht, 1.5,0,1.5); 
+       cubex(car_len,car_wd,car_ht);
+       cubex(car_len-3,car_wd-3,car_ht, 1.5,0,1.5); 
      }  
      tsl (car_len/2)
        dmirrorx() 
          intersection() {
-           cylx (diarf-4, 1, car_len/2-1 -0.05,0,-diarf/2+roof_ht+car_ht, 100);  
-           cubex (10,car_wd-5,50, car_len/2-5,0,10+car_ht);
+           cylx(diarf-4, 1, car_len/2-1 -0.05,0,-diarf/2+roof_ht+car_ht, 100);  
+           cubex(10,car_wd-5,50, car_len/2-5,0,10+car_ht);
          }  
    } 
   }
   difference() {
     box(); 
     dmirrory() // holes for windows
-      duplx (winspace,car_windows-1) 
-        cubey (34,5,40,winspace/2,car_wd/2-0.1,62);
+      duplx(winspace,car_windows-1) 
+        cubey(34,5,40,winspace/2,car_wd/2-0.1,62);
     tsl (car_len/2) 
       dmirrorx()  // hole for door window
-       cubex (5,24,40,car_len/2-0.1,door_offset,57);
+       cubex(5,24,40,car_len/2-0.1,door_offset,57);
   }
   roof (car_len); 
-  color (car_struct_color) {    
-    cubez (car_len,car_wd,-0.2,car_len/2);
+  color(car_struct_color) {    
+    cubez(car_len,car_wd,-0.2,car_len/2);
     dmirrory () 
       cubez (car_len,11.5,-11.5,  car_len/2,32.5); 
   }  
   winspace = car_len/car_windows; 
   dmirrory()
-    duplx (winspace,car_windows-1) {
-      color (winframe_color)
+    duplx(winspace,car_windows-1) {
+      color(winframe_color)
         difference() {
-          cubey (34,1,40, winspace/2,car_wd/2-0.1,62);
-          cubey (30,5,36, winspace/2,car_wd/2-1,62);
+          cubey(34,1,40, winspace/2,car_wd/2-0.1,62);
+          cubey(30,5,36, winspace/2,car_wd/2-1,62);
         }  
       color (clr_glass)  
         cubey (30,0.5,36,winspace/2,car_wd/2-0.2,62);
     } 
-   tsl (car_len/2) 
+   tsl(car_len/2) 
    dmirrorx() tsl (0,door_offset)  {  // doors
      color (winframe_color) {
        difference() {
-         cubex (1,32,80,  car_len/2-0.1,0,40);
-         cubex (5,28,76,  car_len/2-1,0,40);
+         cubex(1,32,80,  car_len/2-0.1,0,40);
+         cubex(5,28,76,  car_len/2-1,0,40);
        }
        difference() {
-         cubex (1,24,40,  car_len/2-0.1,0,57);
-         cubex (5,20,36,  car_len/2-1,0,57);
+         cubex(1,24,40,  car_len/2-0.1,0,57);
+         cubex(5,20,36,  car_len/2-1,0,57);
        }
      }  
      color (clr_glass)  
-       cubex (0.5,20,36,  car_len/2-0.2,0,57);
+       cubex(0.5,20,36,  car_len/2-0.2,0,57);
    }
-  color ("white")
-  cubez (car_len-55,78,-1,  car_len/2,0,-11.5);     
+  color("white")
+  cubez(car_len-55,78,-1,  car_len/2,0,-11.5);     
 }
 
 module platform(mirr=false, plen=45, clr=cabin_color) {
@@ -1552,7 +1553,7 @@ module platform(mirr=false, plen=45, clr=cabin_color) {
       } 
       // then whats removed 
       if (mirr) 
-        tsl (35,car_wd/2)
+        tsl(35,car_wd/2)
           rotz(-45)
             cubey (120,20,300);  
       else 
@@ -1741,7 +1742,7 @@ module mutiline(ttext, txtsize, htext=0.5) { //text in 'z' axis
     for (i=[0:ltxt-1]) {
       txs=(i==ltxt-1)?txtsize*0.8:txtsize; // last line is smaller size (license)
       tsl (0, -1.5*txtsize*i)
-        textz(ttext[i], txs, htext, (i==0),0,0,"center","center");  //(i==0) bold the first line
+        textz(ttext[i], txs, htext, (i==0),0,0,0,"center","center");  //(i==0) bold the first line
     }
   } 
 }
@@ -1757,8 +1758,8 @@ module carnum(lg, mirr) {
         cylx (diarf-5, 1, lg -0.05,0,-diarf/2+roof_ht, 100);
       }  
   color("black")  
-  tsl (sgn*(lg-0.05), 18,95)  
-    textx(17, 9, sgn*1.5, true,0,0,"center","center");   
+  tsl(sgn*(lg-0.05), 18,95)  
+    textx(17, 9, sgn*1.5, true,0,0,0,"center","center");   
 }
 
 module way_side_support() {
@@ -1769,7 +1770,7 @@ module way_side_support() {
   }  
 }
 
-module way_side_support1(swd=12.8, circ_way=false) {
+module way_side_support1(swd=12.8, circ_way=pipe_way) {
   way_hoffset=(circ_way)?diam_way/2-9:beam_width/2-10; 
   dtw = (circ_way) ? diam_way*0.34+way_hoffset : beam_width/2+way_hoffset;
   ext = (circ_way) ? 28:25; // extent of the support

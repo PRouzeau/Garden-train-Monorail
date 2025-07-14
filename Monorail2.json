@@ -1,0 +1,42 @@
+{
+    "fileFormatVersion": "1",
+    "parameterSets": {
+        "Pipe_way": {
+            "BB_vpos": "-69",
+            "angbank": "0",
+            "barht": "14",
+            "beam_width": "27",
+            "beamsupspace": "54",
+            "beamsupspace2": "69",
+            "bgdec": "100",
+            "bgoffset": "50",
+            "brushAxis": "-22",
+            "brushAxisHt": "-18",
+            "car_color": "red",
+            "car_hpos": "2",
+            "car_ht": "92",
+            "car_len": "445",
+            "car_len2": "200",
+            "car_struct_color": "darkgrey",
+            "car_wd": "112",
+            "car_windows": "7",
+            "car_windows2": "3",
+            "carspace": "40",
+            "diam_way": "32",
+            "distpylon": "70",
+            "door_offset": "-10",
+            "hbeam": "27",
+            "part": "0",
+            "partqty": "0",
+            "pipe_way": "true",
+            "railbeamdist": "9",
+            "roof_color": "grey",
+            "roof_ht": "19",
+            "wheel_space": "76",
+            "wheeldia": "40",
+            "wheelgroove": "2",
+            "winframe_color": "beige",
+            "wtopbeam": "27"
+        }
+    }
+}
